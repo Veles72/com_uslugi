@@ -10,25 +10,14 @@ jimport('joomla.application.component.modeladmin');
  */
 class UslugiModelCaditem extends JModelAdmin
 {
-        private $_alias;
+    private $_table_name;
 
-        public function __construct($config = array()) {
-            parent::__construct($config);
-            $this->_set_alias();
-        }
-        /**
-        * Устанавливаем  имя таблицы
-        */
-        public function _set_alias($alias=NULL)
-        {
-            if(!isset($alias))
-            {
-                $alias = JRequest::getString('alias','cadsved_doctype');
-            }
-            $this->_alias = $alias;
-        }
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        $this->_table_name = $type = JFactory::getApplication()->getUserState('com_uslugi.alias', 'cadsved_doctype');
+    }
 
-        /**
+    /**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
 	 * @param	type	The table type to instantiate
@@ -41,7 +30,7 @@ class UslugiModelCaditem extends JModelAdmin
 	{
             if(!isset($type))
             {
-                $type = $this->_alias;
+                $type = $this->_table_name;
             }
             return JTable::getInstance($type, $prefix, $config);
 	}
@@ -70,7 +59,7 @@ class UslugiModelCaditem extends JModelAdmin
 	 */
 	public function getScript() 
 	{
-		return 'administrator/components/com_uslugi/models/forms/uslugi.js';
+		return 'administrator/components/com_uslugi/models/forms/caditem.js';
 	}
 	/**
 	 * Method to get the data that should be injected in the form.
@@ -88,4 +77,19 @@ class UslugiModelCaditem extends JModelAdmin
 		}
 		return $data;
 	}
+        public function getCaditem()
+        {
+            $table = $this->getTable('tablelists');
+            if($table->load(array('alias'=>$this->_table_name)))
+            {
+                return array(
+                        'name'=>$table->name,
+                        'alias'=>$table->alias
+                        );
+            }
+            return array(
+                    'name'=>'',
+                    'alias'=>''
+                    );
+        }
 }

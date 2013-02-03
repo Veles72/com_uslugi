@@ -19,9 +19,8 @@ class UslugiViewCaditems extends JView
 		// Get data from the model
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
-		$alias = JRequest::getString('alias', 'cadsved_doctype');
-                $tables = $this->get('Tables');
-                var_dump($tables);
+                $tablelists = $this->get('Tablelists');
+                $alias = $this->get('Alias');
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
@@ -32,7 +31,7 @@ class UslugiViewCaditems extends JView
 		$this->items = $items;
 		$this->pagination = $pagination;
 		$this->alias = $alias;
-		$this->tables = $this->show_tables($tables);
+		$this->tablelists = $tablelists;
  
 		// Set the toolbar
 		$this->addToolBar();
@@ -53,15 +52,15 @@ class UslugiViewCaditems extends JView
 		JToolBarHelper::title(JText::_('COM_USLUGI_MANAGER_CADITEMS'), 'item');
 		if ($canDo->get('core.create')) 
 		{
-			JToolBarHelper::addNew('item.add', 'JTOOLBAR_NEW');
+			JToolBarHelper::addNew('caditem.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolBarHelper::editList('item.edit', 'JTOOLBAR_EDIT');
+			JToolBarHelper::editList('caditem.edit', 'JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.delete')) 
 		{
-			JToolBarHelper::deleteList('', 'items.delete', 'JTOOLBAR_DELETE');
+			JToolBarHelper::deleteList('', 'caditem.delete', 'JTOOLBAR_DELETE');
 		}
 		if ($canDo->get('core.admin')) 
 		{
@@ -79,27 +78,4 @@ class UslugiViewCaditems extends JView
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_USLUGI_ADMINISTRATION'));
 	}
-        
-        protected function show_tables($tables)
-        {
-            $table_id = JRequest::getInt('table_id',1);
-            $state = array();
-                foreach ($tables as $table)
-                {
-                    $state[] = JHTML::_('select.option'
-                            , $table->id
-                            , JText::_($table->name)
-                    );
-                }
-                return JHTML::_('select.genericlist'
-                                , $state
-                                , 'table_id'
-                                , array() // attributes
-                                , 'value'
-                                , 'text'
-                                , $table_id  // selected
-                                , 'table_id' // DOOM tag ID
-                                , false );
-            
-        }
 }

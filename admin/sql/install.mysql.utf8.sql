@@ -16,15 +16,15 @@ INSERT INTO `#__uslugi` (`id`,`name`,`alias`) VALUES
         (7,'Заказ сведений ЕГРП','egrpsved'),
         (8,'Заказать кадастровые сведения','cadsved');
 
-DROP TABLE IF EXISTS `#__uslugi_tables`;
-CREATE TABLE `#__uslugi_tables` (
+DROP TABLE IF EXISTS `#__uslugi_tablelists`;
+CREATE TABLE `#__uslugi_tablelists` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT 'Имя таблицы',
   `alias` varchar(25) NOT NULL COMMENT 'Псевдомен таблицы',
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='Вспомогательные таблицы';
  
-INSERT INTO `#__uslugi_tables` (`id`,`name`,`alias`) VALUES
+INSERT INTO `#__uslugi_tablelists` (`id`,`name`,`alias`) VALUES
         (1,'Типы документов','cadsved_doctype'),
         (2,'Типы недвижимости','cadsved_real'),
         (3,'Вариант доставки','variant_dostavki'),

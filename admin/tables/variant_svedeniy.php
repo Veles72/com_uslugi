@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/ktable.php';
 /**
  * Hello Table class
  */
-class UslugiTableCadsved_doctype extends TableKTable
+class UslugiTableVariant_svedeniy extends TableKTable
 {
 	/**
 	 * Constructor
@@ -15,6 +15,6 @@ class UslugiTableCadsved_doctype extends TableKTable
 	 */
 	function __construct(&$db) 
 	{
-		parent::__construct('#__uslugi_cadsved_doctype', 'id', $db);
+		parent::__construct('#__uslugi_variant_svedeniy', 'id', $db);
 	}
 }

@@ -8,7 +8,7 @@ jimport('joomla.form.formrule');
 /**
  * Form Rule class for the Joomla Framework.
  */
-class JFormRuleName extends JFormRule
+class JFormRulePrice extends JFormRule
 {
 	/**
 	 * The regular expression.
@@ -17,5 +17,5 @@ class JFormRuleName extends JFormRule
 	 * @var		string
 	 * @since	1.6
 	 */
-	protected $regex = '^[^\$]+$';
+	protected $regex = '^[0-9\.]+$';
 }

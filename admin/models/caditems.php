@@ -8,23 +8,21 @@ jimport('joomla.application.component.modellist');
  */
 class UslugiModelCaditems extends JModelList
 {
-    private $_table_alias;
+    private $_table_name;
 
     
     public function __construct($config = array()) {
         parent::__construct($config);
-        $this->_set_table_alias();
+        $state = JFactory::getApplication()->getUserState('com_uslugi.alias','cadsved_doctype');
+        $alias = JRequest::getString('alias',NULL);
+        $this->_table_name = $alias?$alias:$state;
+        JFactory::getApplication()->setUserState('com_uslugi.alias',$this->_table_name);
+//        var_dump($state,$alias);
     }
-    /**
-     * Устанавливаем  имя таблицы
-     */
-    public function _set_table_alias($alias=NULL)
+
+    public function getAlias()
     {
-        if(!isset($alias))
-        {
-            $alias = JRequest::getString('alias','cadsved_doctype');
-        }
-        $this->_table_alias = $alias;
+        return $this->_table_name;
     }
 
     /**
@@ -35,19 +33,35 @@ class UslugiModelCaditems extends JModelList
     {
             $query = $this->_db->getQuery(true);
             $query->select('*');
-            $query->from('#__uslugi_'.$this->_table_alias);
+            $query->from('#__uslugi_'.$this->_table_name);
             return $query;
     }
-    /**
-    * Получаем список рабочих таблиц
-    * @return	object Список таблиц
-    */
-    public function getTables()
-    {
-            $query = $this->_db->getQuery(true);
-            $query->select('*');
-            $query->from('#__uslugi_tables');
-            $this->_db->setQuery($query);
-            return $this->_db->getObjectList();
-    }
+        /**
+         * Возвращаем список вспомогательных таблиц
+         * @return type HTML select
+         */
+        public function getTablelists()
+        {
+            $tables = $this->getTable('tablelists','UslugiTable')->get_rows();
+
+            $state = array();
+                foreach ($tables as $table)
+                {
+                    $state[] = JHTML::_('select.option'
+                            , $table->alias
+                            , JText::_($table->name)
+                    );
+                }
+                return JHTML::_('select.genericlist'
+                                , $state
+                                , 'alias'
+                                , array() // attributes
+                                , 'value'
+                                , 'text'
+                                , $this->_table_name  // selected
+                                , 'table_list' // DOOM tag ID
+                                , false );
+            
+        }
+
 }

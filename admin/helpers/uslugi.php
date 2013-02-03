@@ -13,7 +13,7 @@ abstract class UslugiHelper
 	public static function addSubmenu($submenu) 
 	{
 		JSubMenuHelper::addEntry(JText::_('COM_USLUGI_SUBMENU_USLUGI'), 'index.php?option=com_uslugi', $submenu == 'uslugi');
-		JSubMenuHelper::addEntry(JText::_('COM_USLUGI_SUBMENU_USLUGI'), 'index.php?option=com_uslugi&view=caditems', $submenu == 'caditem');
+		JSubMenuHelper::addEntry(JText::_('COM_USLUGI_SUBMENU_CADITEMS'), 'index.php?option=com_uslugi&view=caditems', $submenu == 'caditem');
 		// set some global property
 		$document = JFactory::getDocument();
 		$document->addStyleDeclaration('.icon-48-uslugi {background-image: url(../media/com_uslugi/images/tux-48x48.png);}');

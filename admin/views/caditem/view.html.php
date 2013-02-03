@@ -17,10 +17,10 @@ class UslugiViewCaditem extends JView
 	public function display($tpl = null) 
 	{
 		// get the Data
-		$form = $this->get('Form');
 		$item = $this->get('Item');
+		$form = $this->get('Form');
 		$script = $this->get('Script');
- 
+		$caditem = $this->get('Caditem');
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
@@ -31,6 +31,7 @@ class UslugiViewCaditem extends JView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+		$this->caditem = $caditem;
  
 		// Set the toolbar
 		$this->addToolBar();
