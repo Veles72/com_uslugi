@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form name="uslugi">
+	<fieldset name="new_cadsved">
+            <field
+                name="cadsved_doctype_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_CADSVED_DOCTYPE_ID"
+                description="COM_USLUGI_FORM_DESC_CADSVED_DOCTYPE_ID"
+                query="select id, name from #__uslugi_cadsved_doctype"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+            <field
+                name="cadsved_real_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_CADSVED_REAL_ID"
+                description="COM_USLUGI_FORM_DESC_CADSVED_REAL_ID"
+                query="select id, name from #__uslugi_cadsved_real"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+	</fieldset>
+	<fieldset name="edit_cadsved">
+            <field
+                name="cadsved_doctype_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_CADSVED_DOCTYPE_ID"
+                description="COM_USLUGI_FORM_DESC_CADSVED_DOCTYPE_ID"
+                query="select id, name from #__uslugi_cadsved_doctype"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+            <field
+                name="cadsved_real_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_CADSVED_REAL_ID"
+                description="COM_USLUGI_FORM_DESC_CADSVED_REAL_ID"
+                query="select id, name from #__uslugi_cadsved_real"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+	</fieldset>
+	<fieldset name="step_3">
+            <field
+                name="copies"
+                type="text"
+                size="2"
+                label="COM_USLUGI_FORM_LBL_STEP3_COPIES"
+                description="COM_USLUGI_FORM_DESC_STEP3_COPIES"
+                class="inputbox validate-copies"
+                validate="copies"
+                default="1"
+                required="true"
+            />
+            <field
+                name="variant_svedeniy_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_STEP3_VARIANT_SVEDENIY"
+                description="COM_USLUGI_FORM_DESC_STEP3_VARIANT_SVEDENIY"
+                query="select id, name from #__uslugi_variant_svedeniy"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+            <field
+                name="variant_dostavki_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_STEP3_VARIANT_DOSTAVKI"
+                description="COM_USLUGI_FORM_DESC_STEP3_VARIANT_DOSTAVKI"
+                query="select id, name from #__uslugi_variant_dostavki"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+	</fieldset>
+	<fieldset name="client_data">
+            <field
+                name="address"
+                type="text"
+                size="50"
+                label="COM_USLUGI_FORM_LBL_STEP3_ADDRESS"
+                description="COM_USLUGI_FORM_DESC_STEP3_ADDRESS"
+                class="inputbox validate-address"
+                validate="addres"
+                default=""
+                required="true"
+            />
+            <field
+                name="time"
+                type="text"
+                size="20"
+                label="COM_USLUGI_FORM_LBL_STEP3_TIME"
+                description="COM_USLUGI_FORM_DESC_STEP3_TIME"
+                class="inputbox validate-time"
+                validate="time"
+                default=""
+                required="true"
+            />
+            <field
+                name="fio"
+                type="text"
+                size="20"
+                label="COM_USLUGI_FORM_LBL_STEP3_FIO"
+                description="COM_USLUGI_FORM_DESC_STEP3_FIO"
+                class="inputbox validate-fio"
+                validate="fio"
+                default=""
+                required="true"
+            />
+            <field
+                name="phone"
+                type="text"
+                size="20"
+                label="COM_USLUGI_FORM_LBL_STEP3_PHONE"
+                description="COM_USLUGI_FORM_DESC_STEP3_PHONE"
+                class="inputbox"
+                default=""
+                required="true"
+            />
+            <field
+                name="email"
+                type="text"
+                size="20"
+                label="COM_USLUGI_FORM_LBL_STEP3_EMAIL"
+                description="COM_USLUGI_FORM_DESC_STEP3_EMAIL"
+                class="inputbox validate-email"
+                default=""
+                required="true"
+            />
+            
+	</fieldset>
+</form>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addrulepath="/administrator/components/com_uslugi/models/rules"
+>
+	<fieldset name="details">
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_USLUGI_USLUGI_FIELD_NAME_LABEL"
+			description="COM_USLUGI_USLUGI_FIELD_NAME_DESC"
+			size="100"
+			class="inputbox validate-name"
+			validate="name"
+			required="true"
+			default=""
+		/>
+		<field
+			name="alias"
+			type="text"
+			label="COM_USLUGI_USLUGI_FIELD_ALIAS_LABEL"
+			description="COM_USLUGI_USLUGI_FIELD_ALIAS_DESC"
+			size="20"
+			class="inputbox validate-alias"
+			validate="alias"
+			required="true"
+			default=""
+		/>
+	</fieldset>
+	<fields name="params">
+		<fieldset
+			name="params"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+			<field
+				name="show_category"
+				type="list"
+				label="COM_USLUGI_USLUGI_FIELD_SHOW_CATEGORY_LABEL"
+				description="COM_USLUGI_USLUGI_FIELD_SHOW_CATEGORY_DESC"
+				default=""
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>

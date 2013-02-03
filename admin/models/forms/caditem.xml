@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addrulepath="/administrator/components/com_uslugi/models/rules"
+>
+	<fieldset name="tables">
+            <field
+                name="cadsved_real_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_CADSVED_REAL_ID"
+                description="COM_USLUGI_FORM_DESC_CADSVED_REAL_ID"
+                query="select id, name from #__uslugi_cadsved_real"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+            
+            
+        </fieldset>
+	<fieldset name="caditem">
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_USLUGI_FIELD_NAME_LABEL"
+			description="COM_USLUGI_FIELD_NAME_DESC"
+			size="100"
+			class="inputbox validate-name"
+			validate="name"
+			required="true"
+			default=""
+		/>
+		<field
+			name="price"
+			type="text"
+			label="COM_USLUGI_PRICE_FIELD_ALIAS_LABEL"
+			description="COM_USLUGI_PRICE_FIELD_ALIAS_DESC"
+			size="5"
+			class="inputbox validate-price"
+			validate="price"
+			required="true"
+			default=""
+		/>
+	</fieldset>
+</form>
