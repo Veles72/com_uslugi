@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form name="ceazemuch">
+	<fieldset name="step_1">
+            <field name="clienttype_id" 
+                   type="typecli"
+                   label="COM_USLUGI_FORM_LBL_CLIENT_TYPE" 
+                   description="COM_USLUGI_FORM_DESC_CLIENT_TYPE"
+                   class="inputbox"
+                   size="1" 
+                   default="1" >
+            </field>
+            <field
+                name="rayon_id"
+                type="sql"
+                multiple="false"
+                size="1"
+                label="COM_USLUGI_FORM_LBL_RAYON_ID"
+                description="COM_USLUGI_FORM_DESC_RAYON_ID"
+                query="select id, name from #__uslugi_rayon"
+                key_field="id"
+                value_field="name"
+                default="1"
+            >
+            </field>
+            <field
+                name="rayon_text"
+                type="text"
+                multiple="false"
+                size="20"
+                label="COM_USLUGI_FORM_LBL_RAYON_TEXT"
+                description="COM_USLUGI_FORM_DESC_RAYON_TEXT"
+                default=""
+            >
+            </field>
+	</fieldset>
+	<fieldset name="step_2">
+	</fieldset>
+</form>
