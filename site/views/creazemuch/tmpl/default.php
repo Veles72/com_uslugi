@@ -9,7 +9,7 @@ $document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.mi
 <style type="text/css">
     #uslugi-main{width: 500px; overflow: hidden;}
     .uslugi-step{width: 500px; float: left;}
-    #uslugi-step-container{width: 1000px; height: 200px}
+    #uslugi-step-container{width: 1000px; height: auto}
     #to-step_2{float: right}
     #to-step_1{float: left; display: none}
     #usligi-form-submit{float: right;}
@@ -56,13 +56,35 @@ $document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.mi
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <span>Стоимость составит:</span>
+                        <span><?=JTEXT::_('COM_USLUGI_COST')?></span>
                         <ul>
                         <?php foreach($this->tablelist['square'] as $row):?>
                             <li><?='земельный участок '.$row->name.' ('.$row->price.'р.)'?></li>
                         <?php endforeach;?>
                         </ul>
                     </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?=JTEXT::_('COM_USLUGI_END_MEG_PLAN')?>
+                        <?=JTEXT::_('COM_USLUGI_END_MEG_PLAN_START_TIPE')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?=JTEXT::_('COM_USLUGI_DOP_MEG_PLAN_1')?> <?=$this->form->getInput('ex_count')?> <?=JTEXT::_('COM_USLUGI_DOP_MEG_PLAN_2')?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?=JTEXT::_('COM_USLUGI_TRAST_INPUT_DATA_SQUARE')?>
+                        <?=JTEXT::_('COM_USLUGI_INPUT_DATA_SQUARE_START_TIPE')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                    <td><?=$this->form->getInput('trust_saved')?></td>
                 </tr>
             </table>
         </fieldset>

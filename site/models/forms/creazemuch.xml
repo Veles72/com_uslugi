@@ -13,6 +13,7 @@
                 name="rayon_id"
                 type="sql"
                 multiple="false"
+                class="inputbox"
                 size="1"
                 label="COM_USLUGI_FORM_LBL_RAYON_ID"
                 description="COM_USLUGI_FORM_DESC_RAYON_ID"
@@ -25,12 +26,35 @@
             <field
                 name="rayon_text"
                 type="text"
+                class="inputbox"
                 multiple="false"
                 size="20"
                 label="COM_USLUGI_FORM_LBL_RAYON_TEXT"
                 description="COM_USLUGI_FORM_DESC_RAYON_TEXT"
                 default=""
             >
+            </field>
+            <field
+                name="ex_count"
+                type="text"
+                class="inputbox"
+                multiple="false"
+                size="2"
+                label="COM_USLUGI_FORM_LBL_EX_COUNT"
+                description="COM_USLUGI_FORM_DESC_EX_COUNT"
+                default=""
+            >
+            </field>
+            <field
+                name="trust_saved"
+                type="radio"
+                class="inputbox"
+                label="COM_USLUGI_FORM_LBL_EX_TRUST_SAVED"
+                description="COM_USLUGI_FORM_DESC_TRUST_SAVED"
+                default="1"
+            >
+                <option value="0">COM_USLUGI_NO</option>
+                <option value="1">COM_USLUGI_YES</option>
             </field>
 	</fieldset>
 	<fieldset name="step_2">
