@@ -46,6 +46,9 @@
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
+        <languages folder="site">
+                <language tag="ru-RU">language/ru-RU/ru-RU.com_uslugi.ini</language>
+        </languages>
  
 	<media destination="com_uslugi" folder="media">
 		<filename>index.html</filename>

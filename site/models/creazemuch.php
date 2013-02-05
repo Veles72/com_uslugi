@@ -15,7 +15,7 @@ class UslugiModelCreazemuch extends JModelForm
 
     public function __construct($config = array()) {
         parent::__construct($config);
-        $this->_tablelist = array('square');
+        $this->_tablelist = array('square','triggers','rayon');
     }
 
     /**

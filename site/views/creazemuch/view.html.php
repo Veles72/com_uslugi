@@ -51,5 +51,6 @@ class UslugiViewCreazemuch extends JView
         $doc->addStyleSheet('media/com_uslugi/css/site.stylesheet.css');
         $doc->addScript(JURI::root()."components/com_uslugi/views/creazemuch/submitbutton.js");
         $doc->addScript(JURI::root()."components/com_uslugi/models/forms/creazemuch.js");
+        $doc->addScript(JURI::root().'media/com_uslugi/js/jquery.maskedinput-1.3.min.js');
     }
 }

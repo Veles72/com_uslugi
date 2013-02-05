@@ -3,8 +3,11 @@
 defined('_JEXEC') or die('Restricted access');
 $form_action = JRoute::_('index.php?option=com_uslugi');
 JHtml::_('behavior.formvalidation');
-$document =& JFactory::getDocument();
-$document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.min.js');
+$triggers = array();
+foreach($this->tablelist['triggers'] as $row)
+{
+    $triggers[$row->alias] = $row->price;
+}
 ?>
 <style type="text/css">
     #uslugi-main{width: 500px; overflow: hidden;}
@@ -17,32 +20,71 @@ $document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.mi
     span.uslugi-button{width: 100px; cursor: pointer}
 </style>
 <script type="text/javascript">
-    jQuery(document).ready(function($){
-        $.mask.definitions['#']='[9]';  
-        $("#jform_phone").mask("+7(#99) 999-99-99");
-        
-        $('#usligi-form-submit').click(function(){
-            form = $('#uslugi-form').submit();
-        });
-        $('#to-step_2').click(function(){
-            $('#uslugi-step-container').animate({"margin-left": "-500px"}, "slow");
-            $('#to-step_2').fadeTo('slow', 0);
-            $('#to-step_1').fadeTo('slow', 1);
-        });
-        $('#to-step_1').click(function(){
-            $('#uslugi-step-container').animate({"margin-left": "0"}, "slow");
-            $('#to-step_1').fadeTo('slow', 0);
-            $('#to-step_2').fadeTo('slow', 1);
-        });
-    });
+    // Инициализация данных формы и расчета стоимости
+    ComUslugiFormData = new usluga_object();
+    //Стоимость земельного участка в зависимости от размера
+    ComUslugiFormData.square = {
+        cost: '<?=$this->tablelist['square'][0]->price?>',
+        inp: '',
+        scale: new Array(
+        <?php $k=count($this->tablelist['square']);?>
+        <?php foreach($this->tablelist['square'] as $row):?>
+                <?php $k--; $comma=$k?',':''?>
+                {range:<?=$row->range?>,cost:'<?=$row->price?>'}<?=$comma?>
+        <?php endforeach?>
+            )
+    };
+    //Стоимость дополнительных экземпляров межевого плана
+    ComUslugiFormData.ex_count = {
+        cost:'',
+        inp:'',
+        cost_unit:'<?=$triggers['ex_count']?>'
+    };
+    //Стоимость  процедуры внесения сведений о земельном участке на кадастровый учет
+    ComUslugiFormData.trust_saved = {
+        cost:'<?=$triggers['trust_saved']?>',
+        inp:'<?=JTEXT::_('COM_USLUGI_YES')?>',
+        cost_unit:'<?=$triggers['trust_saved']?>'
+    };
+    //Дополнительная услуга «Доставка на дом» (да, или нет)
+    ComUslugiFormData.home_delivery = {
+        cost:'0',
+        inp:'<?=JTEXT::_('COM_USLUGI_NO')?>',
+        cost_unit:'1'
+    };
+    //Стоимость доставки на дом в зависимости от района земельного участка
+    ComUslugiFormData.rayon_id = {
+        cost: '<?=$this->tablelist['rayon'][0]->price?>',
+        inp: '',
+        scale: new Array(
+            <?php $k=count($this->tablelist['rayon']);?>
+            <?php foreach($this->tablelist['rayon'] as $row):?>
+                <?php $k--; $comma=$k?',':''?>
+                {index:<?=$row->id?>,cost:'<?=$row->price?>'}<?=$comma?>
+            <?php endforeach?>
+                )
+    };
+    //ИД типа клиента (юр. или физ. лицо)
+    ComUslugiFormData.clienttype_id = 1;
+    //Тип клиента (юр. или физ. лицо)
+    ComUslugiFormData.clienttype = {
+        name:'Юр. лицо',
+        names: new Array(
+                    {index:1,name:'Физ. лицо'},
+                    {index:2,name:'Юр. лицо'}
+                )
+    };
+    //Адрес земельного участка
+    ComUslugiFormData.rayon_text = '';
 </script>
+<h1><?=JText::_('COM_USLUGI_CREAZEMUCH')?></h1>
 <div id="uslugi-main">
     <div id="uslugi-step-container">
-<form action="<?php echo $form_action ?>" method="post" name="adminForm" id="uslugi-form" class="form-validate">
+<form action="<?=$form_action ?>" method="post" name="adminForm" id="uslugi-form" class="form-validate">
         <div class="uslugi-step">
-        <fieldset class="step-1">
+        <fieldset>
             <legend>
-                <?php echo empty($this->item->id) ? JText::_('COM_USLUGI_NEW_USLUGA') : JText::sprintf('COM_USLUGI_EDIT_USLUGA_DETAILS', $this->item->id); ?>
+                <?=JText::_('COM_USLUGI_FORM_FILL')?>
             </legend>
             <table>
                 <tr>
@@ -55,11 +97,22 @@ $document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.mi
                        <?=$this->form->getInput('rayon_text')?></td>
                 </tr>
                 <tr>
+                    <td>
+                        <?=JTEXT::_('COM_USLUGI_LAND_SQUARE_PLACE')?>
+                        <?=JTEXT::_('COM_USLUGI_INPUT_SQUARE_PLACE_START_TIPE')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                    <td><?=$this->form->getInput('square')?></td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <span><?=JTEXT::_('COM_USLUGI_COST')?></span>
                         <ul>
                         <?php foreach($this->tablelist['square'] as $row):?>
-                            <li><?='земельный участок '.$row->name.' ('.$row->price.'р.)'?></li>
+                            <li><?=JTEXT::_('COM_USLUGI_LAND_SQUARE')
+                                .' '.$row->name.' ('.$row->price
+                                .JTEXT::_('COM_USLUGI_RUB').')'?></li>
                         <?php endforeach;?>
                         </ul>
                     </td>
@@ -86,21 +139,62 @@ $document->addScript(JURI::base().'media/com_uslugi/js/jquery.maskedinput-1.3.mi
                     </td>
                     <td><?=$this->form->getInput('trust_saved')?></td>
                 </tr>
+                <tr>
+                    <td>
+                        <?=JTEXT::_('COM_USLUGI__DOSTAVKA')?>
+                        <?=JTEXT::_('COM_USLUGI__DOSTAVKA_START_TIPE')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                    <td><?=$this->form->getInput('home_delivery')?></td>
+                </tr>
             </table>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <?=JText::_('COM_USLUGI_RASCHET')?>
+                <table>
+                    <tr>
+                        <th><?=JText::_('COM_USLUGI_NAME')?></th>
+                        <th><?=JText::_('COM_USLUGI_INPUTED')?></th>
+                        <th><?=JText::_('COM_USLUGI_COST')?></th>
+                    </tr>
+                    <tr>
+                        <td><?=JText::_('COM_USLUGI_SQUARE_AREA')?></td>
+                        <td id="inp_square"></td>
+                        <td id="cost_square"></td>
+                    </tr>
+                    <tr>
+                        <td><?=JText::_('COM_USLUGI_MEG_PLAN_ADD')?></td>
+                        <td id="inp_ex_count"></td>
+                        <td id="cost_ex_count"></td>
+                    </tr>
+                    <tr>
+                        <td><?=JText::_('COM_USLUGI_TRUST_SAVED_ADD')?></td>
+                        <td id="inp_trust_saved"></td>
+                        <td id="cost_trust_saved"></td>
+                    </tr>
+                    <tr>
+                        <td><?=JText::_('COM_USLUGI_DOSTAVKA_NA_DOM')?></td>
+                        <td id="inp_home_delivery"></td>
+                        <td id="cost_home_delivery"></td>
+                    </tr>
+                </table>
+            </legend>
         </fieldset>
         </div>
         <div class="uslugi-step">
             <fieldset class="step-2">
                 <?php foreach($this->form->getFieldset('step_2') as $field): ?>
-                        <li><?php echo $field->label; ?>
-                                <?php echo $field->input; ?></li>
+                        <li><?=$field->label; ?>
+                                <?=$field->input; ?></li>
                 <?php endforeach; ?>
             </fieldset>
         <span id="usligi-form-submit" class="uslugi-button"><?=JText::_('COM_USLUGI_FORM_SUBMIT')?></span>
         </div>
         <input type="hidden" name="controller" value="upduslugi" />
         <input type="hidden" name="task" value="uslugi.submit" />
-        <?php echo JHtml::_('form.token'); ?>
+        <?=JHtml::_('form.token'); ?>
 </form>
     </div>
     <div class="uslugi-clear"></div>

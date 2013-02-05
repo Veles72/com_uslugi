@@ -35,11 +35,22 @@
             >
             </field>
             <field
+                name="square"
+                type="text"
+                class="inputbox"
+                multiple="false"
+                size="3"
+                label="COM_USLUGI_FORM_LBL_SQUARE"
+                description="COM_USLUGI_FORM_DESC_SQUARE"
+                default=""
+            >
+            </field>
+            <field
                 name="ex_count"
                 type="text"
                 class="inputbox"
                 multiple="false"
-                size="2"
+                size="1"
                 label="COM_USLUGI_FORM_LBL_EX_COUNT"
                 description="COM_USLUGI_FORM_DESC_EX_COUNT"
                 default=""
@@ -55,6 +66,17 @@
             >
                 <option value="0">COM_USLUGI_NO</option>
                 <option value="1">COM_USLUGI_YES</option>
+            </field>
+            <field
+                name="home_delivery"
+                type="radio"
+                class="inputbox"
+                label="COM_USLUGI_FORM_LBL_HOME_DELIVERY"
+                description="COM_USLUGI_FORM_DESC_HOME_DELIVERY"
+                default="0"
+            >
+                <option value="0">COM_USLUGI_NO_BE_REQUIRED</option>
+                <option value="1">COM_USLUGI_TES_BE_REQUIRED</option>
             </field>
 	</fieldset>
 	<fieldset name="step_2">
