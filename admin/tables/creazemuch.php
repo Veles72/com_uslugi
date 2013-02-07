@@ -32,15 +32,7 @@ class UslugiTableCreazemuch extends JTable
 	 */
 	public function check()
 	{
-            // Конвертируем номер телефона
-            if (substr($this->phone,0,3) == '+7(') 
-            {
-                preg_match("/\+7\(([0-9]{3})\) ([0-9]{3})-([0-9]{2})-([0-9]{2})/", $this->phone, $regs);
-                $this->phone = $regs[1].$regs[2].$regs[3].$regs[4];
-            }
-            $this->address = addslashes($this->address);
-            $this->time = addslashes($this->time);
-            $this->fio = addslashes($this->fio);
+            $this->rayon_text = addslashes($this->rayon_text);
             return parent::check();
 	}
         
@@ -53,9 +45,7 @@ class UslugiTableCreazemuch extends JTable
 	{
             if( parent::load($keys, $reset))
             {
-                $this->address = stripcslashes($this->address);
-                $this->time = stripcslashes($this->time);
-                $this->fio = stripcslashes($this->fio);
+                $this->rayon_text = stripcslashes($this->rayon_text);
                 return TRUE;
             }
             return FALSE;

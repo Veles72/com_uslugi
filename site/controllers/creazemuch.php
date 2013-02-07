@@ -14,7 +14,6 @@ class UslugiControllerCreazemuch extends JControllerForm
 	{
             // Check for request forgeries.
             JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
             $model = $this->getModel();
 
             // Get the data from the form POST
@@ -32,6 +31,19 @@ class UslugiControllerCreazemuch extends JControllerForm
             }
 
             return true;
+        }
+        
+        /**
+         * Upload files 
+         */
+        public function upload()
+        {
+            // Check for request forgeries.
+            JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+            jimport('uploader.uploader');
+            $uploader = new Uploader(JPATH_ROOT.DS.'tmp'.DS);
+            $result = $uploader->upload_file(TRUE);
+            die(json_encode($result));
         }
 
 }

@@ -5,6 +5,16 @@ window.addEvent('domready', function() {
 			regex=/^[^0-9]+$/;
 			return regex.test(value);
 	});
+	document.formvalidator.setHandler('square',
+		function (value) {
+			regex=/^[0-9]+$/;
+			return regex.test(value);
+	});
+	document.formvalidator.setHandler('ex_count',
+		function (value) {
+			regex=/^[0-9]+$/;
+			return regex.test(value);
+	});
 });
     jQuery(document).ready(function($){
         // Заполняем таблицу
@@ -21,22 +31,22 @@ window.addEvent('domready', function() {
             $('#uslugi-step-container').animate({"margin-left": "-500px"}, "slow");
             $('#to-step_2').fadeTo('slow', 0);
             $('#to-step_1').fadeTo('slow', 1);
+            $("body").animate({ scrollTop: 0 }, "slow");
         });
         $('#to-step_1').click(function(){
             $('#uslugi-step-container').animate({"margin-left": "0"}, "slow");
             $('#to-step_1').fadeTo('slow', 0);
             $('#to-step_2').fadeTo('slow', 1);
         });
+
         /**
          * Обработчик ввода данных
          */
-
         $( ":input" ).change(function(){
-            var name = /^jform_([A-Za-z_]+)\d?$/i.exec($(this).attr('id'))[1];
+            var name = /^jform_([a-z_]+)\d?$/i.exec($(this).attr('id'))[1];
             var val = $(this).val();
-            var count = eval('ComUslugiFormData.get_cost_'+name+'("'+val+'")');
+            eval('ComUslugiFormData.get_cost_'+name+'("'+val+'")');
             fill_table(ComUslugiFormData);
-            console.log(count);
         });
         
         /**
@@ -44,14 +54,54 @@ window.addEvent('domready', function() {
         */
         function fill_table(FormData)
         {
-            $('#cost_square').text(FormData.square.cost);
-            $('#inp_square').text(FormData.square.inp);
-            $('#cost_ex_count').text(FormData.ex_count.cost);
-            $('#inp_ex_count').text(FormData.ex_count.inp);
-            $('#cost_trust_saved').text(FormData.trust_saved.cost);
-            $('#inp_trust_saved').text(FormData.trust_saved.inp);
-            $('#cost_home_delivery').text(FormData.home_delivery.cost);
-            $('#inp_home_delivery').text(FormData.home_delivery.inp);
+//            $('#cost_square').text(FormData.square.cost);
+//            $('#inp_square').text(FormData.square.inp);
+//            $('#cost_ex_count').text(FormData.ex_count.cost);
+//            $('#inp_ex_count').text(FormData.ex_count.inp);
+//            $('#cost_trust_saved').text(FormData.trust_saved.cost);
+//            $('#inp_trust_saved').text(FormData.trust_saved.inp?'Да':'Нет');
+//            $('#cost_home_delivery').text(parseInt(FormData.home_delivery.cost)*FormData.rayon_id.cost);
+//            $('#inp_home_delivery').text(parseInt(FormData.home_delivery.cost)>0?'Да':'Нет');
+//            $('#cost_total').text(FormData.get_total_cost());
+            $('#ugoda_rayon_text').text(FormData.rayon_text);
+            $('#ugoda_square_text').text(FormData.square.inp);
+            $('#ugoda_cost_text').text(FormData.get_total_cost());
+            if(parseInt(FormData.ex_count.inp)>0)
+            {
+                $('#tr_ex_count').show('slow');
+            }
+            else
+            {
+                $('#tr_ex_count').hide('slow');
+            }
+            if(parseInt(FormData.trust_saved.inp)>0)
+            {
+                $('#tr_trust_saved').show('slow');
+            }
+            else
+            {
+                $('#tr_trust_saved').hide('slow');
+            }
+            if(parseInt(FormData.home_delivery.cost)>0)
+            {
+                $('#tr_home_delivery').show('slow');
+                $('#ugoda_srok_vipolnenia').text('30');
+            }
+            else
+            {
+                $('#tr_home_delivery').hide('slow');
+                $('#ugoda_srok_vipolnenia').text('60');
+            }
+            if(parseInt(FormData.clienttype_id) == 2)
+            {
+                $('#tr_rukov_poln').show('slow');
+            }
+            else
+            {
+                $('#tr_rukov_poln').hide('slow');
+            }
+            $('#ugoda_ex_count_text').text(FormData.ex_count.inp);
+            $('#jform_cost').val(FormData.cost);
         };
     });
     /**
@@ -60,6 +110,8 @@ window.addEvent('domready', function() {
      */
     function usluga_object()
     {
+        //Общая стоимость
+        this.cost = 0;
         //Стоимость земельного участка по умолчанию
         this.square = {
             cost: '10000',
@@ -117,10 +169,10 @@ window.addEvent('domready', function() {
         //Получение стоимости земельного участка
         this.get_cost_square = function(inp_square)
         {
-            inp_square = parseInt(inp_square);
+            this.square.inp = parseInt(inp_square);
             for(var i=0; i<this.square.scale.length; i++)
             {
-                if(inp_square < this.square.scale[i].range)
+                if(this.square.inp < this.square.scale[i].range)
                 {
                     this.square.cost = this.square.scale[i].cost;
                     return this.square.cost;
@@ -131,13 +183,15 @@ window.addEvent('domready', function() {
         //Получение стоимости дополнительных экземпляров межевого плана
         this.get_cost_ex_count = function(inp_ex_count)
         {
-            this.ex_count.cost = parseInt(inp_ex_count)*this.ex_count.cost_unit;
+            this.ex_count.inp = parseInt(inp_ex_count);
+            this.ex_count.cost = this.ex_count.inp*this.ex_count.cost_unit;
             return this.ex_count.cost;
         };  
         //Получение стоимости процедуры внесения сведений о земельном участке на кадастровый учет
         this.get_cost_trust_saved = function(inp_trust_saved)
         {
-            this.trust_saved.cost = parseInt(inp_trust_saved)*this.trust_saved.cost_unit;
+            this.trust_saved.inp = parseInt(inp_trust_saved);
+            this.trust_saved.cost = this.trust_saved.inp*this.trust_saved.cost_unit;
             return this.trust_saved.cost;
         };  
         //Дополнительная услуга «Доставка на дом» (да, или нет)
@@ -181,6 +235,13 @@ window.addEvent('domready', function() {
         {
             this.rayon_text = inp_rayon_text;
             return this.rayon_text;
+        };  
+        //Адрес земельного участка
+        this.get_total_cost = function()
+        {
+            this.cost = parseInt(this.square.cost)+parseInt(this.ex_count.cost)
+                    +parseInt(this.trust_saved.cost)+(this.home_delivery.cost*this.rayon_id.cost);
+            return this.cost;
         };  
     };
 

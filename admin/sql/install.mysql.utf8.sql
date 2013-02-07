@@ -33,7 +33,8 @@ INSERT INTO `#__uslugi_tablelists` (`id`,`name`,`alias`,`ordering`) VALUES
         (4,'Вариант сведений','variant_svedeniy',4),
         (5,'Местоположение земельного участка','rayon',5),
         (6,'Площадь земельного участка','square',6),
-        (7,'Список тригеров','triggers',7);
+        (7,'Список тригеров','triggers',7),
+        (8,'Типы клиентов','user_tapes',8);
 
 DROP TABLE IF EXISTS `#__uslugi_cadsved`;
 CREATE TABLE `#__uslugi_cadsved` (
@@ -49,8 +50,32 @@ CREATE TABLE `#__uslugi_cadsved` (
   `phone` varchar(10) NOT NULL COMMENT 'Телефон',
   `email` varchar(70) NOT NULL COMMENT 'E-mail',
   `sum` decimal(15,0) NOT NULL COMMENT 'Сумма заявки',
+  `client_id` int(11) NOT NULL COMMENT 'ИД клиента',
+  `status` varchar(2) NOT NULL COMMENT 'Статус заявки',
+  `reg_dt` datetime NOT NULL COMMENT 'Дата создания',
+  `pay_dt` datetime NOT NULL COMMENT 'Дата оплаты',
+  `ch_status_dt` datetime NOT NULL COMMENT 'Дата изменения статуса',
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='Кадастровые сведения';
+ 
+DROP TABLE IF EXISTS `#__uslugi_creazemuch`;
+CREATE TABLE `#__uslugi_creazemuch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `clienttype_id` int(2) NOT NULL COMMENT 'ID типа клиента',
+  `rayon_id` int(2) NOT NULL COMMENT 'ID района зем. участка',
+  `rayon_text` varchar(255) NOT NULL COMMENT 'Адрес зем. участка',
+  `square` varchar(10) NOT NULL COMMENT 'Площадь зем. участка',
+  `ex_count` varchar(4) NOT NULL COMMENT 'Кол-во доп. экземпляров',
+  `trust_saved` varchar(1) NOT NULL COMMENT 'Доверять внесение сведений в кад.учет',
+  `home_delivery` varchar(1) NOT NULL COMMENT 'Доставка на дом',
+  `cost` varchar(18) NOT NULL COMMENT 'Стоимость услуги',
+  `client_id` int(11) NOT NULL COMMENT 'ИД клиента',
+  `status` varchar(2) NOT NULL COMMENT 'Статус заявки',
+  `reg_dt` datetime NOT NULL COMMENT 'Дата создания',
+  `pay_dt` datetime NOT NULL COMMENT 'Дата оплаты',
+  `ch_status_dt` datetime NOT NULL COMMENT 'Дата изменения статуса',
+   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='Образование земельных участков из государственной собственности';
  
 DROP TABLE IF EXISTS `#__uslugi_cadsved_doctype`;
 CREATE TABLE `#__uslugi_cadsved_doctype` (
@@ -150,3 +175,29 @@ INSERT INTO `#__uslugi_triggers` (`id`,`name`,`alias`,`price`) VALUES
         (1,'количество экземпляров межевого плана','ex_count','800'),
         (2,'Вы нам доверяете процедуру внесение сведений о земельном участке на кадастровый учет','trust_saved','1000'),
         (3,'Доставка на дом','home_delivery','1');
+
+DROP TABLE IF EXISTS `#__uslugi_user_tapes`;
+CREATE TABLE `#__uslugi_user_tapes` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL COMMENT 'Наименование',
+  `ordering` int(4) NOT NULL COMMENT 'Выравнивание',
+   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT 'Типы клиентов';
+ 
+INSERT INTO `#__uslugi_user_tapes` (`id`,`name`,`ordering`) VALUES
+        (1,'Физ. лицо',1),
+        (2,'Юр. лицо',2);
+
+DROP TABLE IF EXISTS `#__uslugi_users`;
+CREATE TABLE `#__uslugi_users` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `user_id` int(2) NOT NULL COMMENT 'ИД пользователя в системе',
+  `fam` varchar(25) NOT NULL COMMENT 'Фамилия',
+  `im` varchar(25) NOT NULL COMMENT 'Имя',
+  `ot` varchar(25) NOT NULL COMMENT 'Отчество',
+  `address` varchar(100) NOT NULL COMMENT 'Почтовый адрес',
+  `phone` varchar(10) NOT NULL COMMENT 'Телефон',
+  `email` varchar(70) NOT NULL COMMENT 'E-mail',
+   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT 'Типы клиентов';
+

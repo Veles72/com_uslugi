@@ -18,6 +18,9 @@ foreach($this->tablelist['triggers'] as $row)
     #usligi-form-submit{float: right;}
     div.uslugi-clear{clear: both}
     span.uslugi-button{width: 100px; cursor: pointer}
+    span.ugoda_text{margin: 0 5px; font-weight: bold}
+    span.com_uslugi-tooltipe{margin: 0 5px; font-weight: bold}
+    td.align-right{text-align: right}
 </style>
 <script type="text/javascript">
     // Инициализация данных формы и расчета стоимости
@@ -25,7 +28,7 @@ foreach($this->tablelist['triggers'] as $row)
     //Стоимость земельного участка в зависимости от размера
     ComUslugiFormData.square = {
         cost: '<?=$this->tablelist['square'][0]->price?>',
-        inp: '',
+        inp: '<1500',
         scale: new Array(
         <?php $k=count($this->tablelist['square']);?>
         <?php foreach($this->tablelist['square'] as $row):?>
@@ -36,20 +39,19 @@ foreach($this->tablelist['triggers'] as $row)
     };
     //Стоимость дополнительных экземпляров межевого плана
     ComUslugiFormData.ex_count = {
-        cost:'',
-        inp:'',
+        cost:'0',
+        inp:'0',
         cost_unit:'<?=$triggers['ex_count']?>'
     };
     //Стоимость  процедуры внесения сведений о земельном участке на кадастровый учет
     ComUslugiFormData.trust_saved = {
         cost:'<?=$triggers['trust_saved']?>',
-        inp:'<?=JTEXT::_('COM_USLUGI_YES')?>',
+        inp: 1,
         cost_unit:'<?=$triggers['trust_saved']?>'
     };
     //Дополнительная услуга «Доставка на дом» (да, или нет)
     ComUslugiFormData.home_delivery = {
         cost:'0',
-        inp:'<?=JTEXT::_('COM_USLUGI_NO')?>',
         cost_unit:'1'
     };
     //Стоимость доставки на дом в зависимости от района земельного участка
@@ -83,9 +85,6 @@ foreach($this->tablelist['triggers'] as $row)
 <form action="<?=$form_action ?>" method="post" name="adminForm" id="uslugi-form" class="form-validate">
         <div class="uslugi-step">
         <fieldset>
-            <legend>
-                <?=JText::_('COM_USLUGI_FORM_FILL')?>
-            </legend>
             <table>
                 <tr>
                     <td><?=$this->form->getLabel('clienttype_id')?></td>
@@ -151,53 +150,57 @@ foreach($this->tablelist['triggers'] as $row)
             </table>
         </fieldset>
         <fieldset>
-            <legend>
-                <?=JText::_('COM_USLUGI_RASCHET')?>
-                <table>
-                    <tr>
-                        <th><?=JText::_('COM_USLUGI_NAME')?></th>
-                        <th><?=JText::_('COM_USLUGI_INPUTED')?></th>
-                        <th><?=JText::_('COM_USLUGI_COST')?></th>
-                    </tr>
-                    <tr>
-                        <td><?=JText::_('COM_USLUGI_SQUARE_AREA')?></td>
-                        <td id="inp_square"></td>
-                        <td id="cost_square"></td>
-                    </tr>
-                    <tr>
-                        <td><?=JText::_('COM_USLUGI_MEG_PLAN_ADD')?></td>
-                        <td id="inp_ex_count"></td>
-                        <td id="cost_ex_count"></td>
-                    </tr>
-                    <tr>
-                        <td><?=JText::_('COM_USLUGI_TRUST_SAVED_ADD')?></td>
-                        <td id="inp_trust_saved"></td>
-                        <td id="cost_trust_saved"></td>
-                    </tr>
-                    <tr>
-                        <td><?=JText::_('COM_USLUGI_DOSTAVKA_NA_DOM')?></td>
-                        <td id="inp_home_delivery"></td>
-                        <td id="cost_home_delivery"></td>
-                    </tr>
-                </table>
-            </legend>
+            <table>
+                <tr><td colspan="2"><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_1')?></td></tr>
+                <tr><td colspan="2"><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_2')?></td></tr>
+                <tr>
+                    <td><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_3')?></td>
+                    <td class="align-right"><span class='ugoda_text' id='ugoda_square_text'>____</span><?=JTEXT::_('COM_USLUGI_KV_M')?></td>
+                </tr>
+                <tr id="tr_ex_count">
+                    <td><?=JText::_('COM_USLUGI_FORM_LBL_EX_COUNT')?></td>
+                    <td class="align-right"><span class='ugoda_text' id='ugoda_ex_count_text'>____</span><?=JTEXT::_('COM_USLUGI_SHT')?></td>
+                </tr>
+                <tr id="tr_trust_saved"><td colspan="2"><?=JText::_('COM_USLUGI_TRUST_SAVED_ADD')?></td></tr>
+                <tr>
+                    <td><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_4')?></td>
+                    <td class="align-right"><span class='ugoda_text' id='ugoda_srok_vipolnenia'>____</span><?=JTEXT::_('COM_USLUGI_DNEJ')?></td>
+                </tr>
+                <tr id="tr_home_delivery"><td colspan="2"><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_5')?></td></tr>
+                <tr>
+                    <td><?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_6')?></td>
+                    <td class="align-right"><span class='ugoda_text' id='ugoda_cost_text'>____</span><?=JTEXT::_('COM_USLUGI_RUB')?></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_7')?>
+                        <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_8')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                </tr>
+                <tr id="tr_rukov_poln">
+                    <td colspan="2">
+                        <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_9')?>
+                        <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_10')?>
+                        <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
+                        <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                </tr>
+            </table>
         </fieldset>
+        <input type="submit" name="jform_submit" value="<?=JText::_('COM_USLUGI_FORM_SUBMIT')?>">
         </div>
-        <div class="uslugi-step">
-            <fieldset class="step-2">
-                <?php foreach($this->form->getFieldset('step_2') as $field): ?>
-                        <li><?=$field->label; ?>
-                                <?=$field->input; ?></li>
-                <?php endforeach; ?>
-            </fieldset>
-        <span id="usligi-form-submit" class="uslugi-button"><?=JText::_('COM_USLUGI_FORM_SUBMIT')?></span>
-        </div>
-        <input type="hidden" name="controller" value="upduslugi" />
-        <input type="hidden" name="task" value="uslugi.submit" />
+        <input type="hidden" name="jform[cost]" id="jform_cost" value="0" />
+        <input type="hidden" name="task" value="creazemuch.submit" />
         <?=JHtml::_('form.token'); ?>
 </form>
     </div>
     <div class="uslugi-clear"></div>
-    <span id="to-step_1" class="uslugi-button"><?=JText::_('COM_USLUGI_TO_STEP_1')?></span>
-    <span id="to-step_2" class="uslugi-button"><?=JText::_('COM_USLUGI_TO_STEP_2')?></span>
 </div>
+<form method="post" action="<?=$form_action?>" enctype="multipart/form-data">
+        <input type="file" name="Filedata" id="Filedata" />
+        <input type="submit" value="Upload" />
+        <input type="hidden" name="task" value="creazemuch.upload" />
+        <?=JHtml::_('form.token'); ?>
+</form>

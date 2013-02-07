@@ -32,28 +32,32 @@
                 label="COM_USLUGI_FORM_LBL_RAYON_TEXT"
                 description="COM_USLUGI_FORM_DESC_RAYON_TEXT"
                 default=""
+                required="true"
             >
             </field>
             <field
                 name="square"
                 type="text"
-                class="inputbox"
+                class="inputbox validate-square"
                 multiple="false"
                 size="3"
                 label="COM_USLUGI_FORM_LBL_SQUARE"
                 description="COM_USLUGI_FORM_DESC_SQUARE"
                 default=""
+                value_field="square"
+                required="true"
             >
             </field>
             <field
                 name="ex_count"
                 type="text"
-                class="inputbox"
+                class="inputbox validate-ex_count"
                 multiple="false"
                 size="1"
                 label="COM_USLUGI_FORM_LBL_EX_COUNT"
                 description="COM_USLUGI_FORM_DESC_EX_COUNT"
                 default=""
+                required="true"
             >
             </field>
             <field

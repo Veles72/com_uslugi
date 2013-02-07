@@ -56,6 +56,12 @@
 		<folder>images</folder>
 		<folder>js</folder>
 	</media>
+	<libraries destination="uploader" folder="libraries">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</libraries>
 
 	<administration>
 		<!-- Administration Menu Section -->
