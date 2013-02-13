@@ -241,9 +241,11 @@ window.addEvent('domready', function() {
     };
     function file_uploader(params)
     {
-        var file_name = '';
         var $ = jQuery;
+        var name = '';
+        var this_class = this;
         $(document.body).append('<div id="file_upload_div_00"></div>');
+        $(document.body).append('<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>');
         $('#file_upload_div_00').css('display','none');
         $('#file_upload_div_00').append('<form id="file_upload_form_00"></form>');
         $('#file_upload_form_00').attr('method','post');
@@ -283,8 +285,19 @@ window.addEvent('domready', function() {
         });
         // Обработка при клике на кнопку загрузки
         $('.uslugi-upload').click(function(){
-            file_name = /^button_([a-z_]+)$/i.exec($(this).attr('id'))[1];
+            var name = /^button_([a-z_]+)$/i.exec($(this).attr('id'))[1];
+            this_class.set_name(name);
 //            $('#file_'+file_name).click();
             $('#file_upload_file_00').click();
         });
+        // Имя группы элементов, на которой произошел клик
+        function set_name(name){
+            this.name = name;
+        };
     }
+    /**
+     * Обработка результатов загрузки
+     */
+    function stopUpload(success){
+        console.log(success);
+    }    
