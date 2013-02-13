@@ -25,6 +25,8 @@ class UslugiViewCreazemuch extends JView
 //		$this->state	= $this->get('State');
 		$this->form	= $this->get('Form');
 		$this->tablelist= $this->get('Tablelist');
+		$this->triggerst= $this->_get_triggers();
+                $this->form_action = JURI::base().'index.php?option=com_uslugi';
 //		$this->item	= $this->get('Item');
 
 		// Check for errors.
@@ -52,5 +54,18 @@ class UslugiViewCreazemuch extends JView
         $doc->addScript(JURI::root()."components/com_uslugi/views/creazemuch/submitbutton.js");
         $doc->addScript(JURI::root()."components/com_uslugi/models/forms/creazemuch.js");
         $doc->addScript(JURI::root().'media/com_uslugi/js/jquery.maskedinput-1.3.min.js');
+    }
+    /**
+     * Обработка тфблицы тригеров 
+     * 
+     */
+    private function _get_triggers()
+    {
+        $triggers = array();
+        foreach($this->tablelist['triggers'] as $row)
+        {
+            $triggers[$row->alias] = $row->price;
+        }
+        return $triggers;
     }
 }

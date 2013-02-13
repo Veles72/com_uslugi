@@ -53,21 +53,8 @@ class Uploader {
     }
     /**
      * Загрузка
-     * @param string Имя функции, вызываемой в браузере по окончанию загрузки
-     * @param bolean Перезаписывать существующий файл или возвращать ошибку
      */
-    function upload_file($func, $over_load = FALSE)
-    {
-        if(!$func)
-        {
-            $func = 'stopUpload';
-        }
-        $result = json_encode($this->_upload_file($over_load));
-        echo '<script language="javascript" type="text/javascript">window.top.window.'.$func.'('.$result.');</script>';
-        exit;
-
-    }
-    function _upload_file($over_load = FALSE)
+    function upload_file($over_load = FALSE)
     {
             // Code for Session Cookie workaround
 //            if (isset($_POST["PHPSESSID"])) {

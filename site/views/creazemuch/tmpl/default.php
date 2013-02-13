@@ -1,88 +1,13 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$form_action = JRoute::_('index.php?option=com_uslugi');
 JHtml::_('behavior.formvalidation');
-$triggers = array();
-foreach($this->tablelist['triggers'] as $row)
-{
-    $triggers[$row->alias] = $row->price;
-}
 ?>
-<style type="text/css">
-    #uslugi-main{width: 500px; overflow: hidden;}
-    .uslugi-step{width: 500px; float: left;}
-    #uslugi-step-container{width: 1000px; height: auto}
-    #to-step_2{float: right}
-    #to-step_1{float: left; display: none}
-    #usligi-form-submit{float: right;}
-    div.uslugi-clear{clear: both}
-    span.uslugi-button{width: 100px; cursor: pointer}
-    span.ugoda_text{margin: 0 5px; font-weight: bold}
-    span.com_uslugi-tooltipe{margin: 0 5px; font-weight: bold}
-    td.align-right{text-align: right}
-</style>
-<script type="text/javascript">
-    // Инициализация данных формы и расчета стоимости
-    ComUslugiFormData = new usluga_object();
-    //Стоимость земельного участка в зависимости от размера
-    ComUslugiFormData.square = {
-        cost: '<?=$this->tablelist['square'][0]->price?>',
-        inp: '<1500',
-        scale: new Array(
-        <?php $k=count($this->tablelist['square']);?>
-        <?php foreach($this->tablelist['square'] as $row):?>
-                <?php $k--; $comma=$k?',':''?>
-                {range:<?=$row->range?>,cost:'<?=$row->price?>'}<?=$comma?>
-        <?php endforeach?>
-            )
-    };
-    //Стоимость дополнительных экземпляров межевого плана
-    ComUslugiFormData.ex_count = {
-        cost:'0',
-        inp:'0',
-        cost_unit:'<?=$triggers['ex_count']?>'
-    };
-    //Стоимость  процедуры внесения сведений о земельном участке на кадастровый учет
-    ComUslugiFormData.trust_saved = {
-        cost:'<?=$triggers['trust_saved']?>',
-        inp: 1,
-        cost_unit:'<?=$triggers['trust_saved']?>'
-    };
-    //Дополнительная услуга «Доставка на дом» (да, или нет)
-    ComUslugiFormData.home_delivery = {
-        cost:'0',
-        cost_unit:'1'
-    };
-    //Стоимость доставки на дом в зависимости от района земельного участка
-    ComUslugiFormData.rayon_id = {
-        cost: '<?=$this->tablelist['rayon'][0]->price?>',
-        inp: '',
-        scale: new Array(
-            <?php $k=count($this->tablelist['rayon']);?>
-            <?php foreach($this->tablelist['rayon'] as $row):?>
-                <?php $k--; $comma=$k?',':''?>
-                {index:<?=$row->id?>,cost:'<?=$row->price?>'}<?=$comma?>
-            <?php endforeach?>
-                )
-    };
-    //ИД типа клиента (юр. или физ. лицо)
-    ComUslugiFormData.clienttype_id = 1;
-    //Тип клиента (юр. или физ. лицо)
-    ComUslugiFormData.clienttype = {
-        name:'Юр. лицо',
-        names: new Array(
-                    {index:1,name:'Физ. лицо'},
-                    {index:2,name:'Юр. лицо'}
-                )
-    };
-    //Адрес земельного участка
-    ComUslugiFormData.rayon_text = '';
-</script>
+<thead><?php echo $this->loadTemplate('head');?></thead>
 <h1><?=JText::_('COM_USLUGI_CREAZEMUCH')?></h1>
 <div id="uslugi-main">
     <div id="uslugi-step-container">
-<form action="<?=$form_action ?>" method="post" name="adminForm" id="uslugi-form" class="form-validate">
+<form action="<?=$this->form_action ?>" method="post" name="adminForm" id="uslugi-form" class="form-validate">
         <div class="uslugi-step">
         <fieldset>
             <table>
@@ -172,11 +97,14 @@ foreach($this->tablelist['triggers'] as $row)
                     <td class="align-right"><span class='ugoda_text' id='ugoda_cost_text'>____</span><?=JTEXT::_('COM_USLUGI_RUB')?></td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_7')?>
                         <?=JText::_('COM_USLUGI_CREAZEMUCH_TEXT_8')?>
                         <span class="com_uslugi-tooltipe"><?=JTEXT::_('COM_USLUGI_WHOT_IT_IS')?></span>
                         <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
+                    </td>
+                    <td>
+                        <span id="button_pravdoc" class="uslugi-button uslugi-upload"><<Загрузить>></span>
                     </td>
                 </tr>
                 <tr id="tr_rukov_poln">
@@ -198,9 +126,4 @@ foreach($this->tablelist['triggers'] as $row)
     </div>
     <div class="uslugi-clear"></div>
 </div>
-<form method="post" action="<?=$form_action?>" enctype="multipart/form-data">
-        <input type="file" name="Filedata" id="Filedata" />
-        <input type="submit" value="Upload" />
-        <input type="hidden" name="task" value="creazemuch.upload" />
-        <?=JHtml::_('form.token'); ?>
-</form>
+<tfoot><?php echo $this->loadTemplate('foot');?></tfoot

@@ -40,10 +40,13 @@ class UslugiControllerCreazemuch extends JControllerForm
         {
             // Check for request forgeries.
             JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+            // Имя функции, запускаемой в браузере по окончании загрузки.
+            $func = JRequest::getString('func','');
+            // Библиотека загрузчика
             jimport('uploader.uploader');
             $uploader = new Uploader(JPATH_ROOT.DS.'tmp'.DS);
-            $result = $uploader->upload_file(TRUE);
-            die(json_encode($result));
+            // Загружаем файл с перезаписью
+            $uploader->upload_file($func,TRUE);
         }
 
 }

@@ -31,7 +31,7 @@ window.addEvent('domready', function() {
             $('#uslugi-step-container').animate({"margin-left": "-500px"}, "slow");
             $('#to-step_2').fadeTo('slow', 0);
             $('#to-step_1').fadeTo('slow', 1);
-            $("body").animate({ scrollTop: 0 }, "slow");
+            $("body").animate({scrollTop: 0}, "slow");
         });
         $('#to-step_1').click(function(){
             $('#uslugi-step-container').animate({"margin-left": "0"}, "slow");
@@ -43,10 +43,14 @@ window.addEvent('domready', function() {
          * Обработчик ввода данных
          */
         $( ":input" ).change(function(){
-            var name = /^jform_([a-z_]+)\d?$/i.exec($(this).attr('id'))[1];
-            var val = $(this).val();
-            eval('ComUslugiFormData.get_cost_'+name+'("'+val+'")');
-            fill_table(ComUslugiFormData);
+            var name = /^jform_([a-z_]+)\d?$/i.exec($(this).attr('id'));
+            if(name)
+            {
+                var val = $(this).val();
+                eval('ComUslugiFormData.get_cost_'+name[1]+'("'+val+'")');
+                fill_table(ComUslugiFormData);
+            }
+                
         });
         
         /**
@@ -54,15 +58,6 @@ window.addEvent('domready', function() {
         */
         function fill_table(FormData)
         {
-//            $('#cost_square').text(FormData.square.cost);
-//            $('#inp_square').text(FormData.square.inp);
-//            $('#cost_ex_count').text(FormData.ex_count.cost);
-//            $('#inp_ex_count').text(FormData.ex_count.inp);
-//            $('#cost_trust_saved').text(FormData.trust_saved.cost);
-//            $('#inp_trust_saved').text(FormData.trust_saved.inp?'Да':'Нет');
-//            $('#cost_home_delivery').text(parseInt(FormData.home_delivery.cost)*FormData.rayon_id.cost);
-//            $('#inp_home_delivery').text(parseInt(FormData.home_delivery.cost)>0?'Да':'Нет');
-//            $('#cost_total').text(FormData.get_total_cost());
             $('#ugoda_rayon_text').text(FormData.rayon_text);
             $('#ugoda_square_text').text(FormData.square.inp);
             $('#ugoda_cost_text').text(FormData.get_total_cost());
@@ -244,4 +239,52 @@ window.addEvent('domready', function() {
             return this.cost;
         };  
     };
-
+    function file_uploader(params)
+    {
+        var file_name = '';
+        var $ = jQuery;
+        $(document.body).append('<div id="file_upload_div_00"></div>');
+        $('#file_upload_div_00').css('display','none');
+        $('#file_upload_div_00').append('<form id="file_upload_form_00"></form>');
+        $('#file_upload_form_00').attr('method','post');
+        $('#file_upload_form_00').attr('enctype','multipart/form-data');
+        $('#file_upload_form_00').attr('target','upload_target');
+        $('#file_upload_form_00').attr('action',params.action);
+        $.each(params.data, function(name, value) {
+            $('#file_upload_form_00').append('<input type="hidden" name="'+name+'" value="'+value+'">');
+        });
+        $('#file_upload_form_00').append('<input id="file_upload_file_00" type="file" name="Filedata"/>');
+        // Загрузка файла
+        $('#file_upload_file_00').change(function(){
+            for (var i = 0; i < this.files.length; i++) 
+            {
+                if(this.files[i].size>params.max_file_size)
+                {
+                    var max_file_size_mb = params.max_file_size/1000000;
+                    alert('Загружаемый файл первышает максмально допустимый размер: '+max_file_size_mb+'Мб');
+                    return false;
+                }
+                var file_type = /^(\w+)\/(\w+)$/i.exec(this.files[i].type);
+                if(!file_type)
+                {
+                    alert('Не правильный тип файла');
+                    return false;
+                    
+                }
+                var is_image = params.file_types.indexOf(file_type[2]);
+                if(is_image == -1)
+                {
+                    alert('Не правильный тип файла');
+                    return false;
+                    
+                }
+                $('#file_upload_form_00').submit();
+            }
+        });
+        // Обработка при клике на кнопку загрузки
+        $('.uslugi-upload').click(function(){
+            file_name = /^button_([a-z_]+)$/i.exec($(this).attr('id'))[1];
+//            $('#file_'+file_name).click();
+            $('#file_upload_file_00').click();
+        });
+    }
