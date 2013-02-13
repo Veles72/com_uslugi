@@ -244,6 +244,9 @@ window.addEvent('domready', function() {
         var $ = jQuery;
         var name = '';
         var this_class = this;
+        /**
+         * Выводим форму и iframe для загрузки файла
+         */
         $(document.body).append('<div id="file_upload_div_00"></div>');
         $(document.body).append('<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>');
         $('#file_upload_div_00').css('display','none');
@@ -252,10 +255,12 @@ window.addEvent('domready', function() {
         $('#file_upload_form_00').attr('enctype','multipart/form-data');
         $('#file_upload_form_00').attr('target','upload_target');
         $('#file_upload_form_00').attr('action',params.action);
-        $.each(params.data, function(name, value) {
+        $.each(params.upload, function(name, value) {
             $('#file_upload_form_00').append('<input type="hidden" name="'+name+'" value="'+value+'">');
         });
         $('#file_upload_form_00').append('<input id="file_upload_file_00" type="file" name="Filedata"/>');
+        
+        
         // Загрузка файла
         $('#file_upload_file_00').change(function(){
             for (var i = 0; i < this.files.length; i++) 
@@ -285,19 +290,27 @@ window.addEvent('domready', function() {
         });
         // Обработка при клике на кнопку загрузки
         $('.uslugi-upload').click(function(){
-            var name = /^button_([a-z_]+)$/i.exec($(this).attr('id'))[1];
+            var name = /^button_upload_([a-z_]+)$/i.exec($(this).attr('id'))[1];
             this_class.set_name(name);
-//            $('#file_'+file_name).click();
             $('#file_upload_file_00').click();
         });
         // Имя группы элементов, на которой произошел клик
-        function set_name(name){
+        this.set_name = function(name){
             this.name = name;
         };
     }
     /**
      * Обработка результатов загрузки
      */
+    
     function stopUpload(success){
         console.log(success);
+        alert(success[1]);
+        if(success[0] == 1)
+        {
+            jQuery('#button_upload_'+FileUploader.name).hide();
+            jQuery('#button_show_'+FileUploader.name).show();
+        }
+//        console.log(FileUploader.name);
+        
     }    

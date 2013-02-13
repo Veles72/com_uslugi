@@ -104,7 +104,8 @@ JHtml::_('behavior.formvalidation');
                         <?=JTEXT::_('COM_USLUGI_END_TIPE')?>
                     </td>
                     <td>
-                        <span id="button_pravdoc" class="uslugi-button uslugi-upload"><<Загрузить>></span>
+                        <span id="button_upload_pravdoc"class="uslugi-button uslugi-upload"><<Загрузить>></span>
+                        <a id="button_show_pravdoc" href="<?=$this->uslugi_pravdoc_href?>" class="uslugi-hidden" onclick="return hs.htmlExpand(this)"><<Показать>></a>
                     </td>
                 </tr>
                 <tr id="tr_rukov_poln">

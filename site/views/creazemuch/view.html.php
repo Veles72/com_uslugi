@@ -27,6 +27,8 @@ class UslugiViewCreazemuch extends JView
 		$this->tablelist= $this->get('Tablelist');
 		$this->triggerst= $this->_get_triggers();
                 $this->form_action = JURI::base().'index.php?option=com_uslugi';
+//                $this->uslugi_pravdoc_href = 'index.php?option=com_uslugi&task=creazemuch.show_image&img=pravdoc';
+                $this->uslugi_pravdoc_href = JURI::base().'index.php?option=com_uslugi&task=creazemuch.show_image&img=pravdoc&'.JUtility::getToken().'=1';                
 //		$this->item	= $this->get('Item');
 
 		// Check for errors.

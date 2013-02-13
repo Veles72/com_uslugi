@@ -51,32 +51,8 @@ class Uploader {
         }
         $this->_save_path = $save_path;
     }
-    /**
-     * Загрузка
-     * @param string Имя функции, вызываемой в браузере по окончанию загрузки
-     * @param bolean Перезаписывать существующий файл или возвращать ошибку
-     */
-    function upload_file($func, $over_load = FALSE)
+    function upload_file($over_load = FALSE)
     {
-        if(!$func)
-        {
-            $func = 'stopUpload';
-        }
-        $result = json_encode($this->_upload_file($over_load));
-        echo '<script language="javascript" type="text/javascript">window.top.window.'.$func.'('.$result.');</script>';
-        exit;
-
-    }
-    function _upload_file($over_load = FALSE)
-    {
-            // Code for Session Cookie workaround
-//            if (isset($_POST["PHPSESSID"])) {
-//                    session_id($_POST["PHPSESSID"]);
-//            } else if (isset($_GET["PHPSESSID"])) {
-//                    session_id($_GET["PHPSESSID"]);
-//            }
-
-//            session_start();
 
         $msg = '';
         // Check post_max_size (http://us3.php.net/manual/en/features.file-upload.php#73762)
@@ -168,34 +144,12 @@ class Uploader {
                         return array(0,$msg);
                 }
 
-        // Validate file contents (extension and mime-type can't be trusted)
-                /*
-                        Validating the file contents is OS and web server configuration dependant.  Also, it may not be reliable.
-                        See the comments on this page: http://us2.php.net/fileinfo
-
-                        Also see http://72.14.253.104/search?q=cache:3YGZfcnKDrYJ:www.scanit.be/uploads/php-file-upload.pdf+php+file+command&hl=en&ct=clnk&cd=8&gl=us&client=firefox-a
-                         which describes how a PHP script can be embedded within a GIF image file.
-
-                        Therefore, no sample code will be provided here.  Research the issue, decide how much security is
-                         needed, and implement a solution that meets the needs.
-                */
-
-
-        // Process the file
-                /*
-                        At this point we are ready to process the valid file. This sample code shows how to save the file. Other tasks
-                         could be done such as creating an entry in a database or generating a thumbnail.
-
-                        Depending on your server OS and needs you may need to set the Security Permissions on the file after it has
-                        been saved.
-                */
-//                var_dump($_FILES[$upload_name]["tmp_name"], $this->_save_path.$file_name);exit;
                 if (!@move_uploaded_file($_FILES[$upload_name]["tmp_name"], $this->_save_path.$file_name)) {
                         $msg = JTEXT::_("File could not be saved");
                         return array(0,$msg);
                 }
                 $msg = JTEXT::_("There is no error, the file uploaded with success");
-                return (array(1,$msg));
+                return (array(1,$msg,$file_name));
         
     }
 

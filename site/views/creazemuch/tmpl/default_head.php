@@ -18,8 +18,12 @@ defined('_JEXEC') or die('Restricted access');
         // Инициируем загрузчик
         FileUploader = new file_uploader({
             action:'<?=$this->form_action?>',
-            data: {
+            upload: {
                     'task':'creazemuch.upload',
+                    '<?=JUtility::getToken()?>':'1'
+                  },
+            show: {
+                    'task':'creazemuch.show_image',
                     '<?=JUtility::getToken()?>':'1'
                   },
             max_file_size:1000000,

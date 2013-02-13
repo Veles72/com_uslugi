@@ -8,9 +8,26 @@ jimport('joomla.application.component.controllerform');
 
 class UslugiControllerCreazemuch extends JControllerForm
 {
+    /**
+     * Папка для копирования загружаемых файлов
+     * 
+     */
+    private $_upload_dirpath;
+    /**
+     * Путь к рисунку по умолчанию
+     * 
+     */
+    private $_default_src;
 
 
-	public function submit()
+    public function __construct($config = array()) {
+        parent::__construct($config);
+        $this->_upload_dirpath = 'media'.DS.'com_uslugi'.DS.'images'.DS.'temp_images'.DS;
+        $this->_default_src = JURI::base().'media/com_uslugi/images/empty_sheet.png';
+    }
+
+
+    public function submit()
 	{
             // Check for request forgeries.
             JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -40,13 +57,45 @@ class UslugiControllerCreazemuch extends JControllerForm
         {
             // Check for request forgeries.
             JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+            
             // Имя функции, запускаемой в браузере по окончании загрузки.
-            $func = JRequest::getString('func','');
+            $func = JRequest::getString('func','stopUpload');
+            
+            // Папка загрузки с корнем
+            $filepath = JPATH_ROOT.DS.$this->_upload_dirpath;
+            
             // Библиотека загрузчика
             jimport('uploader.uploader');
-            $uploader = new Uploader(JPATH_ROOT.DS.'tmp'.DS);
+            $uploader = new Uploader($filepath);
+            
             // Загружаем файл с перезаписью
-            $uploader->upload_file($func,TRUE);
+            $result = $uploader->upload_file(TRUE);
+            
+            
+            if($result[0])
+            {
+                $result[2] = JURI::base().$this->_upload_dirpath.$result[2];
+                JFactory::getApplication()->setUserState('com_uslugi.src', $result[2]);
+            }
+            $result=json_encode($result);
+            echo '<script language="javascript" type="text/javascript">window.top.window.'.$func.'('.$result.');</script>';
+            exit;
+
+        }
+        /**
+         * Show image 
+         */
+        public function show_image()
+        {
+            // Check for request forgeries.
+            JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+            
+            $src = JFactory::getApplication()->getUserState('com_uslugi.src',$this->_default_src) ;
+            echo '<img src="'.$src.'" />';exit;
+            
+            // Имя функции, запускаемой в браузере по окончании загрузки.
+            $func = JRequest::getString('func','');
+            
         }
 
 }
